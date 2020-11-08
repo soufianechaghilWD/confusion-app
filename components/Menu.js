@@ -7,7 +7,7 @@ import { ListItem, Avatar } from 'react-native-elements'
 const Menu = (props) => {
 
     const renderItem = ({ item, i }) => (
-        <ListItem key={i} bottomDivider >
+        <ListItem key={i} bottomDivider onPress={() => props.onPress(item.id)}>
             <Avatar source={require('./images/uthappizza.png')} />
             <ListItem.Content>
                 <ListItem.Title >{item.name}</ListItem.Title>
@@ -30,7 +30,7 @@ const Menu = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 50,
+        marginTop: 0,
     }
 });
 
