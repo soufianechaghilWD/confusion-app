@@ -1,20 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import { Card} from 'react-native-elements';
+import { DISHES } from '../shared/dishes';
 
 
-function DishDetail({dish}) {
+function DishDetail({route}) {
 
+    const [dishes, setDishes] = useState(DISHES);
+
+
+
+    const { dishId } = route.params;
     const RenderDish = (props)  => {
 
         const dish = props.dish;
         
             if (dish != null) {
                 return(
-                    <Card
-                    featuredTitle={dish.name}
-                    image={require('./images/uthappizza.png')}>
-                        <Text style={{margin: 10}}>
+                    <Card>
+                        <Card.Divider />
+                        <Card.Image source={require('./images/uthappizza.png')} />
+                        <Text>
                             {dish.description}
                         </Text>
                     </Card>
@@ -26,7 +32,7 @@ function DishDetail({dish}) {
     }
 
     return (
-        <RenderDish dish={dish} />
+        <RenderDish dish={dishes.filter(item => item.id === dishId)[0]} />
     )
 }
 

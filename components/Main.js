@@ -1,24 +1,44 @@
-import React, { useState } from 'react';
-import { View } from 'react-native';
-import { DISHES } from '../shared/dishes';
+import React from 'react';
 import DishDetail from './DishDetail';
 import Menu from './Menu';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+const Stack = createStackNavigator();
+
+function MyStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="menu" component={Menu} options={{
+          title: 'menu',
+          headerStyle: {
+            backgroundColor: '#512DA8',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            color: '#fff',
+          },
+        }}/>
+      <Stack.Screen name="Dishdetail" component={DishDetail} options={{
+          title: 'menu',
+          headerStyle: {
+            backgroundColor: '#512DA8',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            color: '#fff',
+          },
+        }}/>
+    </Stack.Navigator>
+  );
+}
 
 const Main = () => {
 
-    const [dishes, setDishes] = useState(DISHES)
-    const [selectedDish, setSelectedDish] = useState(null)
-
-    const onDishSelect = (dishId) => {
-        setSelectedDish(dishId)
-    }
-
     return (
-        <View >
-            <Menu dishes={dishes} onPress={(dishId) => onDishSelect(dishId)}/>
-            <DishDetail dish={dishes.filter((dish) => dish.id === selectedDish)[0]} />
-        </View>
-        
+        <NavigationContainer>
+            <MyStack />
+        </NavigationContainer>
     );
 }
 
