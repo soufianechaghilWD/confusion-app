@@ -2,6 +2,8 @@ import React from 'react';
 import DishDetail from './DishDetail';
 import Menu from './Menu';
 import Home from './Home';
+import About from './About';
+import Contact from './Contact';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -42,7 +44,9 @@ function MyDrawer() {
   return (
     <Drawer.Navigator initialRouteName="home" drawerStyle={{backgroundColor: '#D1C4E9'}}>
       <Drawer.Screen name="home" component={Home} />
+      <Drawer.Screen name="about" component={About}/>
       <Drawer.Screen name="menu" component={MyStack} />
+      <Drawer.Screen name="contact" component={Contact}/>
     </Drawer.Navigator>
   )
 }
