@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Card } from 'react-native-elements';
-import { FlatList, Text , SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { FlatList, Text , SafeAreaView, ScrollView, View, StyleSheet } from 'react-native';
 import { LEADERS } from '../shared/leaders';
 import { ListItem, Avatar } from 'react-native-elements'
 
@@ -26,16 +26,14 @@ function About() {
                 <Text>Started in 2010, Ristorante con Fusion quickly established itself as a culinary icon par excellence in Hong Kong. With its unique brand of world fusion cuisine that can be found nowhere else, it enjoys patronage from the A-list clientele in Hong Kong.  Featuring four of the best three-star Michelin chefs in the world, you never know what will arrive on your plate the next time you visit us.
                         The restaurant traces its humble beginnings to The Frying Pan, a successful chain started by our CEO, Mr. Peter Pan, that featured for the first time the world's best cuisines in a pan.
                 </Text>
-            </Card>
-            <Card>
-                <Card.Title>Corporate Leadership</Card.Title>
+                <Card.Title style={{marginTop: 20}}>Corporate Leadership</Card.Title>
                 <SafeAreaView style={styles.container}>
-                <FlatList
-                    data={leaders}
-                    renderItem={renderItem}
-                    keyExtractor={item => item.id.toString()}
-                />
-            </SafeAreaView>
+                    <FlatList
+                        data={leaders}
+                        renderItem={renderItem}
+                        keyExtractor={item => item.id.toString()}
+                    />
+             </SafeAreaView>
             </Card>
         </ScrollView>
     )
