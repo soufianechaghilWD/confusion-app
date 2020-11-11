@@ -1,25 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
-import { ListItem, Avatar } from 'react-native-elements'
-import { DISHES } from '../shared/dishes';
+import { Tile, Avatar } from 'react-native-elements'
+import { useStateValue } from "./stateProvider";
+import { baseUrl } from '../shared/baseUrl';
 
 
+const Menu = (props) => {
 
-const Menu = ({navigation}) => {
-
-
-    const [dishes, setDishes] = useState(DISHES)
+    const [{dishes}, dispatch] = useStateValue();
 
     const renderItem = ({ item, i }) => (
-        <ListItem key={i} bottomDivider onPress={() => navigation.navigate('Dishdetail', {dishId: item.id })} >
-            <Avatar source={require('./images/uthappizza.png')} />
-            <ListItem.Content>
-                <ListItem.Title >{item.name}</ListItem.Title>
-                <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
-            </ListItem.Content>
-        </ListItem>
+        <Tile
+        key={i}
+        title={item.name}
+        imageSrc={{uri: baseUrl +'/'+ item.image}}
+        featured
+        caption={item.description}
+        onPress={() => props.navigation.navigate('Dishdetail', {dishId: item.id })}
+        />
     );
-
 
     return (
         <SafeAreaView style={styles.container}>

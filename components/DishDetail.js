@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, FlatList } from 'react-native';
 import { Card, Icon } from 'react-native-elements';
-import { DISHES } from '../shared/dishes';
-import { COMMENTS } from '../shared/comments';
+import { useStateValue } from "./stateProvider";
+import { baseUrl } from '../shared/baseUrl';
 
 
-function DishDetail({route}) {
+function DishDetail(props) {
+
+
+    const [{dishes, comments}, dispatch] = useStateValue();
 
 
     function RenderComments(props) {
@@ -34,21 +37,20 @@ function DishDetail({route}) {
         );
     }
 
-    const [comments, setComments] = useState(COMMENTS);
-    const [dishes, setDishes] = useState(DISHES);
     const [favorites, setFavorites] = useState([]);
+
 
     const markFavorite = (dishId)  => {
         setFavorites(favorites.concat(dishId))
     }
 
-    const { dishId } = route.params;
+    const { dishId } = props.route.params;
     const RenderDish = (props)  => {
             if (props.dish != null) {
                 return(
                     <Card>
                         <Card.Divider />
-                        <Card.Image source={require('./images/uthappizza.png')} />
+                        <Card.Image source={{uri: baseUrl+'/'+item.image}} />
                         <Text>
                             {props.dish.description}
                         </Text>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import DishDetail from './DishDetail';
 import Menu from './Menu';
 import Home from './Home';
@@ -9,6 +9,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer';
 import { Icon } from 'react-native-elements'
 import { Image, StyleSheet, ScrollView, Text, SafeAreaView, View } from 'react-native'
+import { useStateValue } from "./stateProvider";
+import { baseUrl } from '../shared/baseUrl';
+
+
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -143,8 +147,52 @@ function MyDrawer() {
 }
 
 
+const Main = (props) => {
 
-const Main = () => {
+  const [{}, dispatch] = useStateValue();
+
+
+  useEffect(() => {
+    fetch(baseUrl+"/dishes")
+    .then(data => data.json())
+    .then(dishes => dispatch(
+      {
+        type: 'SET__DISHES',
+        payload: dishes
+      }
+    ))
+
+    fetch(baseUrl+"/promotions")
+    .then(data => data.json())
+    .then(promos => dispatch(
+      {
+        type: 'SET__PROMOS',
+        payload: promos
+      }
+    ))
+
+
+    fetch(baseUrl+"/leaders")
+    .then(data => data.json())
+    .then(leaders => dispatch(
+      {
+        type: 'SET__LEADERS',
+        payload: leaders
+      }
+    ))
+
+    fetch(baseUrl+"/comments")
+    .then(data => data.json())
+    .then(comments => dispatch(
+      {
+        type: 'SET__COMMENTS',
+        payload: comments
+      }
+    ))
+
+  }, [])
+  
+  
 
     return (
         <NavigationContainer>

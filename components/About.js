@@ -1,17 +1,22 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Card } from 'react-native-elements';
 import { FlatList, Text , SafeAreaView, ScrollView, View, StyleSheet } from 'react-native';
-import { LEADERS } from '../shared/leaders';
 import { ListItem, Avatar } from 'react-native-elements'
+import { useStateValue } from "./stateProvider";
+import { baseUrl } from '../shared/baseUrl';
 
 
-function About() {
 
-    const [leaders, setLeaders] = useState(LEADERS);
+function About(props) {
+
+    const [{leaders}, dispatch] = useStateValue();
+
+
+
 
     const renderItem = ({ item, i }) => (
         <ListItem key={i} >
-            <Avatar source={require('./images/alberto.png')} />
+            <Avatar source={{uri: baseUrl +'/'+ item.image}} />
             <ListItem.Content>
                 <ListItem.Title >{item.name}</ListItem.Title>
                 <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
@@ -44,4 +49,4 @@ const styles = StyleSheet.create({
         marginTop: 0,
     }
 });
-export default About
+export default About;
