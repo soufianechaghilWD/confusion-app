@@ -3,6 +3,7 @@ import { View, ScrollView, Text } from 'react-native';
 import { Card } from 'react-native-elements';
 import { useStateValue } from "./stateProvider";
 import { baseUrl } from '../shared/baseUrl';
+import Loading from './Loading'
 
 function Home(props) {
 
@@ -29,9 +30,14 @@ function Home(props) {
 
     return (
         <ScrollView>
-            <RenderItem item = {dishes?.filter((dish) => dish.featured)[0]}/>
-            <RenderItem item = {promos?.filter((promo) => promo.featured)[0]}/>
+            {dishes.length === 0 ? <Loading /> : 
+            <RenderItem item = {dishes?.filter((dish) => dish.featured)[0]}/>}
+            {promos.length === 0 ? <Loading /> :
+            <RenderItem item = {promos?.filter((promo) => promo.featured)[0]}/>            
+            }
+            {leaders.length === 0 ? <Loading /> :
             <RenderItem item = {leaders?.filter((leader) => leader.featured)[0]}/>
+            }
         </ScrollView>
     )
 }

@@ -4,7 +4,7 @@ import { FlatList, Text , SafeAreaView, ScrollView, View, StyleSheet } from 'rea
 import { ListItem, Avatar } from 'react-native-elements'
 import { useStateValue } from "./stateProvider";
 import { baseUrl } from '../shared/baseUrl';
-
+import Loading from './Loading';
 
 
 function About(props) {
@@ -32,13 +32,14 @@ function About(props) {
                         The restaurant traces its humble beginnings to The Frying Pan, a successful chain started by our CEO, Mr. Peter Pan, that featured for the first time the world's best cuisines in a pan.
                 </Text>
                 <Card.Title style={{marginTop: 20}}>Corporate Leadership</Card.Title>
-                <SafeAreaView style={styles.container}>
+                {leaders.length === 0 ? <Loading /> : <SafeAreaView style={styles.container}>
                     <FlatList
                         data={leaders}
                         renderItem={renderItem}
                         keyExtractor={item => item.id.toString()}
                     />
-             </SafeAreaView>
+                </SafeAreaView>}
+                
             </Card>
         </ScrollView>
     )

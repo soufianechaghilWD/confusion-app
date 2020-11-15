@@ -3,7 +3,7 @@ import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import { Tile, Avatar } from 'react-native-elements'
 import { useStateValue } from "./stateProvider";
 import { baseUrl } from '../shared/baseUrl';
-
+import Loading from './Loading';
 
 const Menu = (props) => {
 
@@ -22,11 +22,13 @@ const Menu = (props) => {
 
     return (
         <SafeAreaView style={styles.container}>
+            {dishes.length === 0 ? <Loading /> : 
             <FlatList
-                data={dishes}
-                renderItem={renderItem}
-                keyExtractor={item => item.id.toString()}
+            data={dishes}
+            renderItem={renderItem}
+            keyExtractor={item => item.id.toString()}
             />
+            }
         </SafeAreaView>
     );
 }
