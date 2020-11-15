@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, ScrollView, FlatList } from 'react-native';
 import { Card, Icon } from 'react-native-elements';
 import { useStateValue } from "./stateProvider";
 import { baseUrl } from '../shared/baseUrl';
-
+import Loading from './Loading'
 
 function DishDetail(props) {
 
 
-    const [{dishes, comments}, dispatch] = useStateValue();
+    const [{dishes, comments, favorites}, dispatch] = useStateValue();
 
 
     function RenderComments(props) {
@@ -37,11 +37,15 @@ function DishDetail(props) {
         );
     }
 
-    const [favorites, setFavorites] = useState([]);
 
 
     const markFavorite = (dishId)  => {
-        setFavorites(favorites.concat(dishId))
+        if(!favorites.some(x => x === dishId)){
+            return dispatch({
+                type: 'SET__FAVORITE',
+                payload: dishId
+            })
+        }
     }
 
     const { dishId } = props.route.params;
@@ -50,7 +54,7 @@ function DishDetail(props) {
                 return(
                     <Card>
                         <Card.Divider />
-                        <Card.Image source={{uri: baseUrl+'/'+item.image}} />
+                        <Card.Image source={{uri: baseUrl+'/'+props.dish.image}} />
                         <Text>
                             {props.dish.description}
                         </Text>
@@ -71,13 +75,17 @@ function DishDetail(props) {
     }
 
     return (
-        <ScrollView>
+        
+            dishes.length === 0 ? <Loading /> : 
+                <ScrollView>
             <RenderDish dish={dishes[+dishId]}
-                    favorite={favorites.some(el => el === dishId)}
-                    onPress={() => markFavorite(dishId)} 
-                    />
+            favorite={favorites.some(el => el === dishId)}
+            onPress={() => markFavorite(dishId)} 
+            />
             <RenderComments comments={comments.filter((comment) => comment.dishId === dishId)} />
-        </ScrollView>
+            </ScrollView>
+            
+            
 
     )
 }

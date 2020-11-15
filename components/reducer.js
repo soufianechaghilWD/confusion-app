@@ -2,7 +2,8 @@ export const initialState = {
     dishes: [],
     promos: [],
     leaders: [],
-    comments: []
+    comments: [],
+    favorites: []
 };
 const reducer = (state, action) => {
     switch (action.type) {
@@ -25,6 +26,11 @@ const reducer = (state, action) => {
           return{
               ...state,
               comments: action.payload
+          }
+      case "SET__FAVORITE":
+          return{
+              ...state,
+              favorites: [...state.favorites, action.payload]
           }
       default:
         return state;
