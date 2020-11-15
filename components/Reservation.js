@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button } from 'react-native';
+import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Modal, Alert, TouchableHighlight} from 'react-native';
 import { Card } from 'react-native-elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -10,6 +10,7 @@ function Reservation () {
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
+    const [modal, setModal] = useState(false)
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -29,14 +30,21 @@ function Reservation () {
   const showTimepicker = () => {
     showMode('time');
   };
-
+  const toggleModal = () => {
+    setModal(!modal)
+    }
     const handleReservation = () => {
         console.log(JSON.stringify({guests: guests, smoking: smoking, date: date}));
+        toggleModal()
+    }
+    
+    const resetForm = () => {
         setGuests(1)
         setSmoking(false)
         setDate(new Date())
+        setModal(false)
     }
-    
+
         return(
             <ScrollView>
                 <View style={styles.formRow}>
@@ -91,6 +99,27 @@ function Reservation () {
                     accessibilityLabel="Learn more about this purple button"
                     />
                 </View>
+                <Modal animationType = {"slide"} transparent = {false}
+                    visible = {modal}
+                    onDismiss = {() => toggleModal }
+                    onRequestClose = {() => toggleModal }>
+                    <View style = {styles.modal}>
+                        <Text style = {styles.modalTitle}>Your Reservation</Text>
+                        <Text style = {styles.modalText}>Number of Guests: {guests}</Text>
+                        <Text style = {styles.modalText}>Smoking?: {smoking ? 'Yes' : 'No'}</Text>
+                        <Text style = {styles.modalText}>Date and Time: {JSON.stringify(date)}</Text>
+                        <View>
+                        <Button 
+                            onPress = {() =>{toggleModal(); resetForm()}}
+                            color="#512DA8"
+                            title="Close" 
+                            />
+                    </View>
+                    </View>
+                    
+                   
+                </Modal>
+                
             </ScrollView>
         );
 
@@ -99,8 +128,7 @@ function Reservation () {
 const styles = StyleSheet.create({
     button: {
         marginBottom: 10
-    }
-    ,
+    },
     formRow: {
       alignItems: 'center',
       justifyContent: 'center',
@@ -114,7 +142,23 @@ const styles = StyleSheet.create({
     },
     formItem: {
         flex: 1
-    }
+    },
+    modal: {
+        justifyContent: 'center',
+        margin: 20
+     },
+     modalTitle: {
+         fontSize: 24,
+         fontWeight: 'bold',
+         backgroundColor: '#512DA8',
+         textAlign: 'center',
+         color: 'white',
+         marginBottom: 20
+     },
+     modalText: {
+         fontSize: 18,
+         margin: 10
+     }
 });
 
 export default Reservation;
