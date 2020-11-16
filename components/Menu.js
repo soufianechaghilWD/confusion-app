@@ -4,20 +4,24 @@ import { Tile, Avatar } from 'react-native-elements'
 import { useStateValue } from "./stateProvider";
 import { baseUrl } from '../shared/baseUrl';
 import Loading from './Loading';
+import * as Animatable from 'react-native-animatable';
+
 
 const Menu = (props) => {
 
     const [{dishes}, dispatch] = useStateValue();
 
     const renderItem = ({ item, i }) => (
-        <Tile
-        key={i}
-        title={item.name}
-        imageSrc={{uri: baseUrl +'/'+ item.image}}
-        featured
-        caption={item.description}
-        onPress={() => props.navigation.navigate('Dishdetail', {dishId: item.id })}
-        />
+        <Animatable.View animation="fadeInRightBig" duration={2000}>
+            <Tile
+            key={i}
+            title={item.name}
+            imageSrc={{uri: baseUrl +'/'+ item.image}}
+            featured
+            caption={item.description}
+            onPress={() => props.navigation.navigate('Dishdetail', {dishId: item.id })}
+            />
+        </Animatable.View>
     );
 
     return (

@@ -4,6 +4,7 @@ import { Card, Icon, Input, Rating, AirbnbRating  } from 'react-native-elements'
 import { useStateValue } from "./stateProvider";
 import { baseUrl } from '../shared/baseUrl';
 import Loading from './Loading'
+import * as Animatable from 'react-native-animatable';
 
 function DishDetail(props) {
 
@@ -36,13 +37,15 @@ function DishDetail(props) {
         };
         
         return (
-            <Card title='Comments' >
-            <FlatList 
-                data={comments}
-                renderItem={renderCommentItem}
-                keyExtractor={item => item.id.toString()}
-                />
-            </Card>
+            <Animatable.View animation="fadeInUp" duration={2000}>
+                <Card title='Comments' >
+                <FlatList 
+                    data={comments}
+                    renderItem={renderCommentItem}
+                    keyExtractor={item => item.id.toString()}
+                    />
+                </Card>
+            </Animatable.View>
         );
     }
 
@@ -61,32 +64,34 @@ function DishDetail(props) {
     const RenderDish = (props)  => {
             if (props.dish != null) {
                 return(
-                    <Card>
-                        <Card.Divider />
-                        <Card.Image source={{uri: baseUrl+'/'+props.dish.image}} />
-                        <Text>
-                            {props.dish.description}
-                        </Text>
-                        <View style={{flex: 1, flexDirection: 'row'}}>
-                            <Icon 
-                            raised
-                            reverse
-                            name={ props.favorite ? 'heart' : 'heart-o'}
-                            type='font-awesome'
-                            color='#f50'
-                            onPress={() => props.favorite ? console.log('Already favorite') : props.onPress()}
-                            />
-                            <Icon 
-                            raised
-                            reverse
-                            name='pencil'
-                            type='font-awesome'
-                            color='#f50'
-                            onPress={() => setModal(true)}
-                            />
-                        </View>
-                        
-                    </Card>
+                    <Animatable.View animation="fadeInDown" duration={2000}>
+                        <Card>
+                            <Card.Divider />
+                            <Card.Image source={{uri: baseUrl+'/'+props.dish.image}} />
+                            <Text>
+                                {props.dish.description}
+                            </Text>
+                            <View style={{flex: 1, flexDirection: 'row'}}>
+                                <Icon 
+                                raised
+                                reverse
+                                name={ props.favorite ? 'heart' : 'heart-o'}
+                                type='font-awesome'
+                                color='#f50'
+                                onPress={() => props.favorite ? console.log('Already favorite') : props.onPress()}
+                                />
+                                <Icon 
+                                raised
+                                reverse
+                                name='pencil'
+                                type='font-awesome'
+                                color='#f50'
+                                onPress={() => setModal(true)}
+                                />
+                            </View>
+                        </Card>
+                    </Animatable.View>
+                    
                 );
             }
             else {
