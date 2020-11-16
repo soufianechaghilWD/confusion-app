@@ -1,5 +1,5 @@
 import React from 'react'
-import { FlatList, View, Text } from 'react-native';
+import { FlatList, Alert } from 'react-native';
 import { ListItem } from "react-native-elements";
 import { Loading } from './Loading';
 import { baseUrl } from '../shared/baseUrl'
@@ -18,10 +18,28 @@ function Favorite(props) {
             {
                 text: 'Delete', 
                 type: 'delete',
-                onPress: () => dispatch({
-                    type: "DELETE__FAVORITES",
-                    payload: item.id
-                })
+                onPress: () => {
+                    Alert.alert(
+                        'Delete Favorite?',
+                        'Are you sure you wish to delete the favorite dish ' + item.name + '?',
+                        [
+                            { 
+                                text: 'Cancel', 
+                                onPress: () => console.log(item.name + 'Not Deleted'),
+                                style: ' cancel'
+                            },
+                            {
+                                text: 'OK',
+                                onPress: () => dispatch({
+                                    type: "DELETE__FAVORITES",
+                                    payload: item.id
+                                })
+                            }
+                        ],
+                        { cancelable: false }
+                    );
+                    
+                }
             }
         ];
 
