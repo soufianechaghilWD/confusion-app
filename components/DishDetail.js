@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, FlatList, Modal, Button, TextInput } from 'react-native';
+import { View, Text, ScrollView, FlatList, Modal, Button, Alert, PanResponder } from 'react-native';
 import { Card, Icon, Input, Rating, AirbnbRating  } from 'react-native-elements';
 import { useStateValue } from "./stateProvider";
 import { baseUrl } from '../shared/baseUrl';
@@ -52,51 +52,81 @@ function DishDetail(props) {
 
 
     const markFavorite = (dishId)  => {
-        if(!favorites.some(x => x === dishId)){
             return dispatch({
                 type: 'SET__FAVORITE',
                 payload: dishId
             })
-        }
     }
 
     const { dishId } = props.route.params;
     const RenderDish = (props)  => {
-            if (props.dish != null) {
-                return(
-                    <Animatable.View animation="fadeInDown" duration={2000}>
-                        <Card>
-                            <Card.Divider />
-                            <Card.Image source={{uri: baseUrl+'/'+props.dish.image}} />
-                            <Text>
-                                {props.dish.description}
-                            </Text>
-                            <View style={{flex: 1, flexDirection: 'row'}}>
-                                <Icon 
-                                raised
-                                reverse
-                                name={ props.favorite ? 'heart' : 'heart-o'}
-                                type='font-awesome'
-                                color='#f50'
-                                onPress={() => props.favorite ? console.log('Already favorite') : props.onPress()}
-                                />
-                                <Icon 
-                                raised
-                                reverse
-                                name='pencil'
-                                type='font-awesome'
-                                color='#f50'
-                                onPress={() => setModal(true)}
-                                />
-                            </View>
-                        </Card>
-                    </Animatable.View>
-                    
-                );
+
+        const recognizeDrag = ({ moveX, moveY, dx, dy }) => {
+            if ( dx < -200 )
+                return true;
+            else
+                return false;
+        }
+
+
+        const panResponder = PanResponder.create({
+            onStartShouldSetPanResponder: (e, gestureState) => {
+                return true;
+            },
+            onPanResponderEnd: (e, gestureState) => {
+                console.log("pan responder end", gestureState);
+                if (recognizeDrag(gestureState))
+                    Alert.alert(
+                        'Add Favorite',
+                        'Are you sure you wish to add ' + props.dish.name + ' to favorite?',
+                        [
+                        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                        {text: 'OK', onPress: () => {props.favorite ? console.log('Already favorite') : props.onPress()}},
+                        ],
+                        { cancelable: false }
+                    );
+    
+                return true;
             }
-            else {
-                return(<View></View>);
-            }
+        })
+
+
+
+        if (props.dish != null) {
+            return(
+                <Animatable.View animation="fadeInDown" duration={2000} {...panResponder.panHandlers}>
+                    <Card>
+                        <Card.Divider />
+                        <Card.Image source={{uri: baseUrl+'/'+props.dish.image}} />
+                        <Text>
+                            {props.dish.description}
+                        </Text>
+                        <View style={{flex: 1, flexDirection: 'row'}}>
+                            <Icon 
+                            raised
+                            reverse
+                            name={ props.favorite ? 'heart' : 'heart-o'}
+                            type='font-awesome'
+                            color='#f50'
+                            onPress={() => props.favorite ? console.log('Already favorite') : props.onPress()}
+                            />
+                            <Icon 
+                            raised
+                            reverse
+                            name='pencil'
+                            type='font-awesome'
+                            color='#f50'
+                            onPress={() => setModal(true)}
+                            />
+                        </View>
+                    </Card>
+                </Animatable.View>
+                
+            );
+        }
+        else {
+            return(<View></View>);
+        }
     }
     const ratingCompleted = (rating) => {
         console.log("Rating is: " + rating)
