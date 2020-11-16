@@ -4,6 +4,7 @@ import { ListItem } from "react-native-elements";
 import { Loading } from './Loading';
 import { baseUrl } from '../shared/baseUrl'
 import { useStateValue } from "./stateProvider";
+import Swipeout from 'react-native-swipeout';
 
 function Favorite(props) {
 
@@ -11,9 +12,24 @@ function Favorite(props) {
 
 
     const renderMenuItem = ({item, index}) => {
-    
+        
+        
+        const rightButton = [
+            {
+                text: 'Delete', 
+                type: 'delete',
+                onPress: () => dispatch({
+                    type: "DELETE__FAVORITES",
+                    payload: item.id
+                })
+            }
+        ];
+
+
         return (
-            <ListItem
+
+            <Swipeout right={rightButton} autoClose={true}>
+                <ListItem
                 key={index}
                 title={item.name}
                 subtitle={item.description}
@@ -21,8 +37,13 @@ function Favorite(props) {
                 onPress={() => props.navigation.navigate('Dishdetail', {dishId: item.id })}
                 leftAvatar={{ source: {uri: baseUrl + "/"+item.image}}}
                 />
+            </Swipeout>
         );
     };
+
+
+    
+
 
     return (
         dishes.length === 0 ? <Loading /> :
