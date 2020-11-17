@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Modal, Alert, TouchableHighlight} from 'react-native';
-import { Card } from 'react-native-elements';
+import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Modal, Alert } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import * as Animatable from 'react-native-animatable';
 
 function Reservation () {
 
@@ -34,8 +34,25 @@ function Reservation () {
     setModal(!modal)
     }
     const handleReservation = () => {
+        Alert.alert(
+            'Your Reservation OK?',
+            'Number of guests : ' + guests+"\nSmoking : "+smoking+" \nDate and Time : "+date,
+            [
+                { 
+                
+                    text: 'Cancel', 
+                    onPress: () => console.log('Not Reserved'),
+                    style: ' cancel'
+                },
+                {
+                    text: 'OK',
+                    onPress: () => console.log('Reserved')
+                }
+            ],
+            { cancelable: false }
+        );
         console.log(JSON.stringify({guests: guests, smoking: smoking, date: date}));
-        toggleModal()
+        //toggleModal()
     }
     
     const resetForm = () => {
@@ -46,6 +63,7 @@ function Reservation () {
     }
 
         return(
+            <Animatable.View animation="zoomIn" duration={2000}>
             <ScrollView>
                 <View style={styles.formRow}>
                 <Text style={styles.formLabel}>Number of Guests</Text>
@@ -121,6 +139,8 @@ function Reservation () {
                 </Modal>
                 
             </ScrollView>
+            </Animatable.View>
+
         );
 
 };

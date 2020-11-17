@@ -26,6 +26,7 @@ function Favorite(props) {
                         'Are you sure you wish to delete the favorite dish ' + item.name + '?',
                         [
                             { 
+                            
                                 text: 'Cancel', 
                                 onPress: () => console.log(item.name + 'Not Deleted'),
                                 style: ' cancel'

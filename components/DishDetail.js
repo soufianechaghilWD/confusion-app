@@ -59,7 +59,10 @@ function DishDetail(props) {
     }
 
     const { dishId } = props.route.params;
+
+
     const RenderDish = (props)  => {
+
 
         const recognizeDrag = ({ moveX, moveY, dx, dy }) => {
             if ( dx < -200 )
@@ -91,10 +94,11 @@ function DishDetail(props) {
         })
 
 
-
         if (props.dish != null) {
+
             return(
-                <Animatable.View animation="fadeInDown" duration={2000} {...panResponder.panHandlers}>
+                <Animatable.View animation="fadeInDown" duration={2000}  
+                    {...panResponder.panHandlers}>
                     <Card>
                         <Card.Divider />
                         <Card.Image source={{uri: baseUrl+'/'+props.dish.image}} />
