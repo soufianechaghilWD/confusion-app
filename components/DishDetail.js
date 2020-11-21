@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, FlatList, Modal, Button, Alert, PanResponder } from 'react-native';
-import { Card, Icon, Input, Rating, AirbnbRating  } from 'react-native-elements';
+import { Text, View, ScrollView, FlatList, Modal, StyleSheet, Button, Alert, PanResponder, Share } from 'react-native';import { Card, Icon, Input, Rating, AirbnbRating  } from 'react-native-elements';
 import { useStateValue } from "./stateProvider";
 import { baseUrl } from '../shared/baseUrl';
 import Loading from './Loading'
@@ -122,6 +121,13 @@ function DishDetail(props) {
                             color='#f50'
                             onPress={() => setModal(true)}
                             />
+                            <Icon
+                            raised
+                            reverse
+                            name='share'
+                            type='font-awesome'
+                            color='#51D2A8'
+                            onPress={() => shareDish(props.dish.name, props.dish.description, baseUrl +'/'+ props.dish.image)} />
                         </View>
                     </Card>
                 </Animatable.View>
@@ -148,6 +154,18 @@ function DishDetail(props) {
         setModal(false)
         console.log(comments)
     }
+
+
+    const shareDish = (title, message, url) => {
+        Share.share({
+            title: title,
+            message: title + ': ' + message + ' ' + url,
+            url: url
+        },{
+            dialogTitle: 'Share ' + title
+        })
+    }
+
 
     return (
         
