@@ -11,9 +11,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer';
 import { Icon } from 'react-native-elements'
-import { Image, StyleSheet, ScrollView, Text, SafeAreaView, View } from 'react-native'
-import { useStateValue } from "./stateProvider";
+import { View, Text, ScrollView, Image, StyleSheet, ToastAndroid, SafeAreaView } from 'react-native';import { useStateValue } from "./stateProvider";
 import { baseUrl } from '../shared/baseUrl';
+import NetInfo from "@react-native-community/netinfo";
 
 
 const Stack = createStackNavigator();
@@ -265,7 +265,40 @@ const Main = (props) => {
     ))
 
   }, [])
+
+  useEffect(() => {
+    NetInfo.getConnectionInfo()
+        .then((connectionInfo) => {
+            ToastAndroid.show('Initial Network Connectivity Type: '
+                + connectionInfo.type + ', effectiveType: ' + connectionInfo.effectiveType,
+                ToastAndroid.LONG)
+        });
+
+    NetInfo.addEventListener('connectionChange', handleConnectivityChange);
+  }, [])
   
+  useEffect(() => {
+    NetInfo.removeEventListener('connectionChange', handleConnectivityChange);
+  }, [])
+
+  const handleConnectivityChange = (connectionInfo) => {
+    switch (connectionInfo.type) {
+      case 'none':
+        ToastAndroid.show('You are now offline!', ToastAndroid.LONG);
+        break;
+      case 'wifi':
+        ToastAndroid.show('You are now connected to WiFi!', ToastAndroid.LONG);
+        break;
+      case 'cellular':
+        ToastAndroid.show('You are now connected to Cellular!', ToastAndroid.LONG);
+        break;
+      case 'unknown':
+        ToastAndroid.show('You now have unknown connection!', ToastAndroid.LONG);
+        break;
+      default:
+        break;
+    }
+  }
   
 
     return (

@@ -2,7 +2,7 @@ import React from 'react'
 import { Card, Button, Icon } from 'react-native-elements';
 import { Text, ScrollView } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import * as MailComposer from 'expo-mail-composer';
+//import * as MailComposer from 'expo-mail-composer';
 
 function Contact() {
 
@@ -30,8 +30,8 @@ function Contact() {
                         title="Send Email"
                         buttonStyle={{backgroundColor: "#512DA8"}}
                         icon={<Icon name='envelope-o' type='font-awesome' color='white' />}
-                        onPress={sendMail}
-                        />
+                        onPress={() => console.log('hey')}
+                    /> 
                 </Card>
             </Animatable.View>
         </ScrollView>
