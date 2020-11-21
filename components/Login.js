@@ -144,6 +144,10 @@ function Singup () {
                         title="Camera"
                         onPress={() => console.log('hey there')}
                         />
+                    <Button
+                        title="Gallery"
+                        onPress={() => console.log('hey there')}
+                    />
                 </View>
                 <Input
                     placeholder="Username"
